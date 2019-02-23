@@ -34,8 +34,11 @@ class Generator(nn.Module):
         return out
 
 
-def fake_loss(G_out: torch.Tensor):
+def fake_loss(G_out: torch.Tensor, cuda):
     batch_size = G_out.size(0)
     labels = torch.ones(batch_size)
+
+    if cuda:
+        labels = labels.cuda()
 
     return criterion(G_out.squeeze(), labels)

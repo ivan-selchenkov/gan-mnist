@@ -29,12 +29,15 @@ class Discriminator(nn.Module):
         return out
 
 
-def real_loss(D_out: torch.Tensor, smooth=False):
+def real_loss(D_out: torch.Tensor, cuda, smooth=False):
     batch_size = D_out.size(0)
 
     if smooth:
         labels = torch.ones(batch_size) * 0.9
     else:
         labels = torch.ones(batch_size)
+
+    if cuda:
+        labels = labels.cuda()
 
     return criterion(D_out.squeeze(), labels)
